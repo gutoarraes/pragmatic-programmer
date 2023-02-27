@@ -1,4 +1,6 @@
 <%= form_with(model: movie) do |f| %>
+
+    <%= render "/shared/errors", object: movie %>   
     <%= f.label :title %>
     <%= f.text_field :title, autofocus: true %>
 
@@ -6,10 +8,10 @@
     <%= f.text_area :description, rows: 10 %>
 
     <%= f.label :rating %>
-    <%= f.text_field :rating %>
+    <%= f.select :rating, Movie::RATINGS %>
 
     <%= f.label :released_on  %>
-    <%= f.date_select :released_on, {}, {class: "date"} %>
+    <%= f.date_select :released_on, {start_year: 1990}, {class: "date"} %>
 
     <%= f.label :total_gross  %>
     <%= f.number_field :total_gross  %>
