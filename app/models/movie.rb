@@ -14,8 +14,6 @@ class Movie < ApplicationRecord
 }
 
 RATINGS = %w(G PG PG-13 R NC-17)
-RATINGS2 = ['G', 'PG', 'PG-13', 'R', 'NC-17']
-
 
   validates :rating, inclusion: { in: RATINGS, message: "not a valid rating"}
 
