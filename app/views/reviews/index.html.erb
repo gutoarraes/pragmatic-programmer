@@ -1,8 +1,19 @@
-<h1> Reviews for <%= link_to @movie.title, @movie %> </h1>
-<ul>
-    <% reviews.each do |review| %>
-        <li> <%= review.stars %> </li>
-        <li> <%= review.name %> </li>
-        <li> <%= review.comment %> </li>
-    <% end %>
+<ul class="reviews">
+  <% @reviews.each do |r| %>
+    <li>
+      <%= render "shared/stars", percent: r.stars_as_percent %>
+      <p>
+        <%= r.name %>
+        <span class="date">
+          <%= time_ago_in_words(r.created_at) %> ago
+        </span>
+      </p>
+      <p>
+        <%= r.comment %>
+      </p>
+    </li>
+  <%= link_to "Delete review", [@movie, r], class: "button", data: {turbo_method: :delete, turbo_confirm: "Delete this review?"} %>
+  <% end %>
+  <div> <%= link_to "New Review", new_movie_review_path(@movie) %> </div>
+
 </ul>

@@ -26,5 +26,8 @@ RATINGS = %w(G PG PG-13 R NC-17)
     total_gross.blank? || total_gross < 225_000_000
   end
 
+  def average_stars
+    reviews.average(:stars) || 0.0
+  end
 end
 

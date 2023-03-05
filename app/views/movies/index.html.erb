@@ -5,13 +5,13 @@
     </div>
     <div class="summary">
       <h2>
-        <%= link_to movie.title, movie  %> 
+        <%= link_to movie.title, movie  %>
       </h2>
       <h2>
         <%= year_of(movie) %> &bull; <%= movie.rating %>
       </h2>
       <h3>
-        <%= total_gross(movie) %>
+        <%= total_gross(movie) %> &bull;  <%= average_stars(movie) %>
       </h3>
       <p>
         <%= truncate(movie.description, length: 150, separator: ' ') %>
