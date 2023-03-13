@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+
+  before_action :require_signin, except: [:create, :new]
+
   def index
     @users = User.all
   end
@@ -14,21 +17,35 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      flash[:notice] = "Thanks for signing up"
-      redirect_to @user
+      session[:user_id] = @user.id
+      redirect_to @user, notice: "Thanks for signing up!"
     else
-      render new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      redirect_to @user, notice: "Account successfully updated!"
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @user = User.find(params[:id])
     @user.destroy
-    flash[:notice] = 'User successfully deleted'
-    redirect_to users_url, status: :see_other
+    session[:user_id] = nil
+    redirect_to movies_url, status: :see_other,
+                alert: "Account successfully deleted!"
   end
 
-  private
+private
 
   def user_params
     params.require(:user).
