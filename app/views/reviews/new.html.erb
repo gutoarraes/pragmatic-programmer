@@ -3,8 +3,6 @@
 <%= form_with(model: [@movie, @review]) do |f| %>
 
     <%= render "/shared/errors", object: @movie %>
-    <%= f.label :title %>
-    <%= f.text_field :name, autofocus: true %>
 
     <%= f.label :comment %>
     <%= f.text_area :comment, rows: 5 %>
