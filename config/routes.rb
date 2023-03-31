@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :genres
   resources :users
   root "movies#index"
   resources :movies do
@@ -8,9 +9,10 @@ Rails.application.routes.draw do
 
   get "signup" => "users#new"
   get "signin" => "users#show"
+  get "signin" => "sessions#new"
+  get "movies/filter/:filter" => "movies#index", as: :filtered
 
   resource :session, only: [:new, :create, :destroy]
 
-  get "signin" => "sessions#new"
 
 end

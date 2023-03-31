@@ -1,10 +1,14 @@
 class Movie < ApplicationRecord
 
+  before_save :set_slug
   has_many :reviews, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_many :fans, through: :favorites, source: :user
+  has_many :Characterization
+  has_many :genre, through: :Characterization
 
-  validates :title, :duration, :released_on, presence: true
+  validates :duration, :released_on, presence: true
+  validates :title, presence: true, uniqueness: true
 
   validates :description, length: { minimum: 25 }
 
@@ -19,10 +23,9 @@ RATINGS = %w(G PG PG-13 R NC-17)
 
   validates :rating, inclusion: { in: RATINGS, message: "not a valid rating"}
 
-
-  def self.released
-    Movie.where("released_on > ?", 1500).order("released_on DESC")
-  end
+  scope :released, -> { where("released_on < ?", Time.now).order("released_on desc") }
+  scope :upcoming, -> { where("released_on > ?", Time.now).order("released_on desc") }
+  scope :recent, -> (max=5) {released.limit(max)}
 
   def flop?
     total_gross.blank? || total_gross < 225_000_000
@@ -30,6 +33,16 @@ RATINGS = %w(G PG PG-13 R NC-17)
 
   def average_stars
     reviews.average(:stars) || 0.0
+  end
+
+  private
+
+  def set_slug
+    self.slug = title.parameterize
+  end
+
+  def to_param
+    slug
   end
 end
 
