@@ -63,7 +63,7 @@ class MoviesController < ApplicationController
         movie_params = params.require(:movie).permit!
     end
 
-    set_movie
+    def set_movie
         @movie = Movie.find_by(slug: params[:id])
     end
 end
